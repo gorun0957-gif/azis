@@ -1,0 +1,134 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'gorun0957@gmail.com' ||
+        request.auth.token.email == 'pustakaassanad@gmail.com' ||
+        request.auth.token.email == 'bababuna190522@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        exists(/databases/$(database)/documents/sppg_v2_admins/$(request.auth.uid)) ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin') ||
+        (exists(/databases/$(database)/documents/sppg_v2_users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/sppg_v2_users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+
+    function isValidBeneficiary(data) {
+      return data.keys().hasAll(['nik', 'name', 'category', 'birthDate', 'gender', 'address']) &&
+             data.nik is string && data.nik.size() >= 4 && data.nik.size() <= 30 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 120 &&
+             data.category is string && data.category.size() > 0 && data.category.size() <= 50 &&
+             data.birthDate is string && data.birthDate.size() <= 30 &&
+             data.gender in ['L', 'P'] &&
+             data.address is string && data.address.size() <= 500;
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow get: if true;
+    }
+
+    // ==========================================
+    // ISOLATED STANDALONE COLLECTIONS (gorun0957@gmail.com)
+    // Completely separated from legacy project
+    // ==========================================
+    match /sppg_v2_beneficiaries/{beneficiaryId} {
+      allow read: if true;
+      allow create, update: if isValidBeneficiary(incoming());
+      allow delete: if true;
+    }
+
+    match /sppg_v2_posyanduAccounts/{accountId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_customCategories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_customFields/{fieldId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_activationRequests/{requestId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_sppgLicenses/{licenseId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_settings/{settingsId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_users/{userId} {
+      allow read, write: if true;
+    }
+
+    match /sppg_v2_admins/{adminId} {
+      allow read, write: if true;
+    }
+
+    // ==========================================
+    // LEGACY COLLECTIONS (Preserved for old app)
+    // ==========================================
+    match /beneficiaries/{beneficiaryId} {
+      allow read: if true;
+      allow create, update: if isValidBeneficiary(incoming());
+      allow delete: if true;
+    }
+
+    match /posyanduAccounts/{accountId} {
+      allow read, write: if true;
+    }
+
+    match /customCategories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    match /customFields/{fieldId} {
+      allow read, write: if true;
+    }
+
+    match /activationRequests/{requestId} {
+      allow read, write: if true;
+    }
+
+    match /sppgLicenses/{licenseId} {
+      allow read, write: if true;
+    }
+
+    match /settings/{settingsId} {
+      allow read, write: if true;
+    }
+
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    match /admins/{adminId} {
+      allow read, write: if true;
+    }
+  }
+}

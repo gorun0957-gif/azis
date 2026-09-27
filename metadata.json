@@ -1,0 +1,10 @@
+{
+  "name": "Remix PM 3B SPPG JAYAMUKTI",
+  "description": "Sistem Informasi Pencatatan Penerima Manfaat 3B (Balita, Bumil, Busui) dan Kader Posyandu Desa Jayamukti dengan sinkronisasi real-time dan multi-role.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

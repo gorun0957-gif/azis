@@ -1,0 +1,336 @@
+{
+  "entities": {
+    "beneficiary": {
+      "title": "Beneficiary",
+      "description": "Data sasaran penerima manfaat PM 3B, kader, dan kategori kustom SPPG",
+      "type": "object",
+      "properties": {
+        "nik": {
+          "type": "string",
+          "description": "Nomor identitas kependudukan atau nomor pendaftaran",
+          "minLength": 4,
+          "maxLength": 30
+        },
+        "name": {
+          "type": "string",
+          "description": "Nama lengkap penerima manfaat atau kader",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "description": "Kode kategori penerima manfaat (balita, bumil, busui, kader, atau kategori dinamis)",
+          "maxLength": 50
+        },
+        "posyandu": {
+          "type": "string",
+          "description": "Nama Posyandu wilayah kerja SPPG",
+          "maxLength": 120
+        },
+        "birthDate": {
+          "type": "string",
+          "description": "Tanggal lahir format YYYY-MM-DD",
+          "maxLength": 10
+        },
+        "gender": {
+          "type": "string",
+          "description": "Jenis kelamin L (Laki-laki) atau P (Perempuan)",
+          "enum": ["L", "P"]
+        },
+        "address": {
+          "type": "string",
+          "description": "Alamat domisili penerima manfaat",
+          "maxLength": 255
+        },
+        "customData": {
+          "type": "object",
+          "description": "Data atribut kustom dinamis yang ditambahkan bebas oleh admin"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "ID petugas atau kader pembuat data"
+        },
+        "createdByName": {
+          "type": "string",
+          "description": "Nama petugas atau kader pembuat data"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Waktu pembuatan data ISO"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Waktu perubahan data ISO"
+        }
+      },
+      "required": ["nik", "name", "category", "birthDate", "gender", "address"]
+    },
+    "posyanduAccount": {
+      "title": "PosyanduAccount",
+      "description": "Akun dan akses masing-masing Posyandu yang dikelola secara dinamis oleh Admin",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID unik akun posyandu"
+        },
+        "posyanduName": {
+          "type": "string",
+          "description": "Nama Posyandu"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username login posyandu"
+        },
+        "password": {
+          "type": "string",
+          "description": "Kata sandi login posyandu"
+        },
+        "kaderName": {
+          "type": "string",
+          "description": "Nama penanggung jawab kader"
+        },
+        "wilayah": {
+          "type": "string",
+          "description": "Wilayah / RW / Dusun kerja"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Waktu pembaruan akun"
+        }
+      },
+      "required": ["id", "posyanduName", "username", "password"]
+    },
+    "customCategory": {
+      "title": "CustomCategory",
+      "description": "Kategori sasaran dinamis yang dapat ditambah secara bebas oleh Admin",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID kategori"
+        },
+        "name": {
+          "type": "string",
+          "description": "Label nama kategori"
+        },
+        "code": {
+          "type": "string",
+          "description": "Kode unik kategori lowercase"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Emoji atau ikon penanda kategori"
+        },
+        "badgeColor": {
+          "type": "string",
+          "description": "Warna badge kategori"
+        },
+        "description": {
+          "type": "string",
+          "description": "Keterangan sasaran kategori"
+        }
+      },
+      "required": ["id", "name", "code"]
+    },
+    "customField": {
+      "title": "CustomField",
+      "description": "Definisi kolom isian formulir dinamis yang ditambahkan bebas oleh Admin",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID kolom kustom"
+        },
+        "key": {
+          "type": "string",
+          "description": "Kunci field kustom unik"
+        },
+        "label": {
+          "type": "string",
+          "description": "Label teks kolom isian"
+        },
+        "type": {
+          "type": "string",
+          "description": "Tipe input data (text, number, select, date, boolean)",
+          "enum": ["text", "number", "select", "date", "boolean"]
+        },
+        "categoryScope": {
+          "type": "string",
+          "description": "Kategori sasaran yang menggunakan kolom ini atau all"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Apakah kolom ini wajib diisi"
+        }
+      },
+      "required": ["id", "key", "label", "type"]
+    },
+    "activationRequest": {
+      "title": "ActivationRequest",
+      "description": "Permohonan aktivasi lisensi SPPG ke email pemilik aplikasi pustakaassanad@gmail.com",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID permohonan aktivasi"
+        },
+        "sppgName": {
+          "type": "string",
+          "description": "Nama instansi SPPG pemohon"
+        },
+        "region": {
+          "type": "string",
+          "description": "Wilayah / Kota / Provinsi pemohon"
+        },
+        "picName": {
+          "type": "string",
+          "description": "Nama penanggung jawab / PIC"
+        },
+        "picEmail": {
+          "type": "string",
+          "description": "Email pemohon"
+        },
+        "picPhone": {
+          "type": "string",
+          "description": "Nomor WhatsApp / HP pemohon"
+        },
+        "targetOwnerEmail": {
+          "type": "string",
+          "description": "Email pemilik penerima aktivasi: pustakaassanad@gmail.com"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status permohonan (pending, approved, rejected)",
+          "enum": ["pending", "approved", "rejected"]
+        },
+        "requestedAt": {
+          "type": "string",
+          "description": "Waktu permohonan diajukan"
+        }
+      },
+      "required": ["id", "sppgName", "region", "picName", "targetOwnerEmail", "status"]
+    },
+    "sppgLicense": {
+      "title": "SppgLicense",
+      "description": "Lisensi resmi penggunaan aplikasi SPPG yang diterbitkan oleh pemilik",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID lisensi"
+        },
+        "licenseKey": {
+          "type": "string",
+          "description": "Kode izin aktivasi lisensi resmi"
+        },
+        "sppgName": {
+          "type": "string",
+          "description": "Nama SPPG berlisensi"
+        },
+        "region": {
+          "type": "string",
+          "description": "Wilayah operasional SPPG"
+        },
+        "ownerEmail": {
+          "type": "string",
+          "description": "Email penerbit: pustakaassanad@gmail.com"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status lisensi (active, suspended, expired)",
+          "enum": ["active", "suspended", "expired"]
+        },
+        "expiresAt": {
+          "type": "string",
+          "description": "Masa berlaku lisensi format ISO atau lifetime"
+        }
+      },
+      "required": ["id", "licenseKey", "sppgName", "status"]
+    },
+    "appSettings": {
+      "title": "AppSettings",
+      "description": "Pengaturan judul, logo galeri, warna tema, dan konfigurasi SPPG",
+      "type": "object",
+      "properties": {
+        "appTitle": {
+          "type": "string",
+          "description": "Judul aplikasi utama",
+          "maxLength": 120
+        },
+        "appSubtitle": {
+          "type": "string",
+          "description": "Subjudul aplikasi",
+          "maxLength": 160
+        },
+        "logoDataUrl": {
+          "type": "string",
+          "description": "Logo galeri format base64 data URL"
+        },
+        "primaryColor": {
+          "type": "string",
+          "description": "Warna hex tema utama"
+        }
+      },
+      "required": ["appTitle", "primaryColor"]
+    }
+  },
+  "firestore": {
+    "/sppg_v2_beneficiaries/{beneficiaryId}": {
+      "schema": "beneficiary",
+      "description": "Data penerima manfaat PM 3B dan kategori dinamis (isolated namespace)"
+    },
+    "/sppg_v2_posyanduAccounts/{accountId}": {
+      "schema": "posyanduAccount",
+      "description": "Data posyandu dinamis yang dikelola admin (isolated namespace)"
+    },
+    "/sppg_v2_customCategories/{categoryId}": {
+      "schema": "customCategory",
+      "description": "Kategori sasaran dinamis yang dibuat bebas oleh admin (isolated namespace)"
+    },
+    "/sppg_v2_customFields/{fieldId}": {
+      "schema": "customField",
+      "description": "Definisi kolom isian bebas yang dibuat oleh admin (isolated namespace)"
+    },
+    "/sppg_v2_activationRequests/{requestId}": {
+      "schema": "activationRequest",
+      "description": "Permohonan aktivasi lisensi SPPG ke pustakaassanad@gmail.com (isolated namespace)"
+    },
+    "/sppg_v2_sppgLicenses/{licenseId}": {
+      "schema": "sppgLicense",
+      "description": "Lisensi resmi dan kode izin aktivasi SPPG (isolated namespace)"
+    },
+    "/sppg_v2_settings/{settingsId}": {
+      "schema": "appSettings",
+      "description": "Konfigurasi aplikasi dan lisensi (isolated namespace)"
+    },
+    "/beneficiaries/{beneficiaryId}": {
+      "schema": "beneficiary",
+      "description": "Data penerima manfaat PM 3B dan kategori dinamis"
+    },
+    "/posyanduAccounts/{accountId}": {
+      "schema": "posyanduAccount",
+      "description": "Data posyandu dinamis yang dikelola admin"
+    },
+    "/customCategories/{categoryId}": {
+      "schema": "customCategory",
+      "description": "Kategori sasaran dinamis yang dibuat bebas oleh admin"
+    },
+    "/customFields/{fieldId}": {
+      "schema": "customField",
+      "description": "Definisi kolom isian bebas yang dibuat oleh admin"
+    },
+    "/activationRequests/{requestId}": {
+      "schema": "activationRequest",
+      "description": "Permohonan aktivasi lisensi SPPG wilayah lain ke pustakaassanad@gmail.com"
+    },
+    "/sppgLicenses/{licenseId}": {
+      "schema": "sppgLicense",
+      "description": "Lisensi resmi dan kode izin aktivasi SPPG"
+    },
+    "/settings/{settingsId}": {
+      "schema": "appSettings",
+      "description": "Konfigurasi aplikasi dan lisensi"
+    }
+  }
+}
